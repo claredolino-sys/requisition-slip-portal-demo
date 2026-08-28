@@ -1,0 +1,8 @@
+{
+  "name": "Remix REQUISITION AND ISSUE SLIP PORTAL",
+  "description": "A sanitized portfolio demo of the Requisition and Issue Slip inventory management workflow with multi-role access control, automated tracking, PDF generation, and report analytics.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
