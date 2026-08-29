@@ -6,14 +6,15 @@
 [![Vite](https://img.shields.io/badge/Vite-6.2-646CFF?style=flat&logo=vite&logoColor=white)](https://vitejs.dev/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-> **🔒 Privacy & Sanitization Notice:**  
-> This repository contains a **client-side, privacy-sanitized demo replica** of an enterprise/government Requisition and Issue Slip (Appendix 63) workflow system. All organizational data, personal identifiers, and backend secrets have been replaced with generic placeholders (*e.g., Citizen A, Citizen B, Case #12345, Apex Innovations Corp*). It runs entirely in the browser using an in-memory & localStorage mock engine, requiring **zero database configuration** to test or host on Vercel/Netlify.
+> **🔒 Privacy & Data Disclaimer**
+> This repository contains a sanitized, open-source demo version of an application originally developed for a government agency. To comply with privacy requirements and non-disclosure standards, all sensitive production data, credentials, and proprietary branding have been completely removed and replaced with mock data.
 
 ---
 
 ## 📌 Live Demo & Overview
 
 - **Live Demo Link:** *[Insert your Vercel/Netlify URL here]*
+- **Portfolio Video Walkthrough:** *[Insert optional video/Loom link here]*
 
 This system streamlines standard organizational requisition flows, replacing manual paper routing with role-based digital tracking, dynamic stock availability validation, automatic inventory deductions upon approval, automated PDF generation, and historical analytics reporting.
 

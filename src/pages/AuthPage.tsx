@@ -229,7 +229,12 @@ export default function AuthPage() {
           </button>
         </div>
 
-        <div className="text-center pt-2 border-t border-gray-100">
+        <div className="text-center pt-4 border-t border-gray-100">
+          <div className="bg-amber-50 p-3 rounded-lg border border-amber-200 text-left mb-3 shadow-xs">
+            <p className="text-[11px] text-amber-800 leading-snug">
+              <strong>Note:</strong> This is a sanitized demo version of a system originally built for a government agency. All sensitive data and proprietary branding have been removed or anonymized to comply with privacy requirements.
+            </p>
+          </div>
           <p className="text-xs text-gray-400">
             Portfolio Demo Replica • Sanitized Mock Architecture
           </p>
