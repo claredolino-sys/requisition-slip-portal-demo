@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../utils/api';
 import toast from 'react-hot-toast';
-import { exportToPDF, exportRIStoPDF } from '../utils/pdf';
+import { exportRIStoPDF } from '../utils/pdf';
 import { Download, Send, Printer, Eye, Edit, X } from 'lucide-react';
 import { ConfirmModal } from '../components/ConfirmModal';
 
@@ -67,217 +67,257 @@ export default function EmployeeRISPage() {
     window.print();
   };
 
-  if (loading) return <div className="p-8">Loading...</div>;
+  if (loading) return <div className="p-4 sm:p-8 text-gray-500">Loading your records...</div>;
 
   return (
-    <div className="p-8">
-      <div className="flex justify-between items-center mb-8 print:hidden">
+    <div className="p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6 sm:mb-8 print:hidden">
         <div>
-          <h1 className="text-2xl font-bold text-[#1A2340]">My RIS Records</h1>
-          <p className="text-sm text-gray-500 mt-1">Manage your Requisition and Issue Slips</p>
+          <h1 className="text-xl sm:text-2xl font-bold text-[#1A2340]">My RIS Records</h1>
+          <p className="text-xs sm:text-sm text-gray-500 mt-1">Manage and track your Requisition and Issue Slips</p>
         </div>
         <button 
           onClick={() => navigate('/new-ris')}
-          className="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors flex items-center gap-2"
+          className="bg-blue-600 text-white px-4 py-2.5 rounded-lg font-semibold hover:bg-blue-700 transition-colors flex items-center justify-center gap-2 text-sm shadow-xs w-full sm:w-auto"
         >
           <Edit size={16} />
-          New RIS
+          Create New RIS
         </button>
       </div>
 
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden print:hidden">
-        <table className="w-full text-left border-collapse">
-          <thead>
-            <tr className="bg-gray-50 border-b border-gray-200">
-              <th className="p-4 text-xs font-bold text-gray-500 uppercase tracking-wider">RIS No.</th>
-              <th className="p-4 text-xs font-bold text-gray-500 uppercase tracking-wider">Date</th>
-              <th className="p-4 text-xs font-bold text-gray-500 uppercase tracking-wider">Purpose</th>
-              <th className="p-4 text-xs font-bold text-gray-500 uppercase tracking-wider">Status</th>
-              <th className="p-4 text-xs font-bold text-gray-500 uppercase tracking-wider text-right">Actions</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-200">
-            {records.length === 0 ? (
-              <tr><td colSpan={5} className="p-8 text-center text-gray-500">No RIS records found.</td></tr>
-            ) : records.map(ris => (
-              <tr key={ris.id} className="hover:bg-gray-50 transition-colors">
-                <td className="p-4 font-medium text-gray-900">
-                  {ris.ris_no || <span className="text-gray-400 italic">Pending</span>}
-                </td>
-                <td className="p-4 text-sm text-gray-600">
-                  {new Date(ris.createdAt).toLocaleDateString()}
-                </td>
-                <td className="p-4 text-sm text-gray-600 max-w-xs truncate">
-                  {ris.purpose || '-'}
-                </td>
-                <td className="p-4">
-                  <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium capitalize
-                    ${ris.status === 'draft' ? 'bg-gray-100 text-gray-800' : 
-                      ris.status === 'sent' ? 'bg-blue-100 text-blue-800' : 
-                      ris.status === 'received' ? 'bg-yellow-100 text-yellow-800' : 
-                      ris.status === 'rejected' ? 'bg-red-100 text-red-800' : 
-                      'bg-green-100 text-green-800'}`}>
-                    {ris.status.replace('_', ' ')}
-                  </span>
-                </td>
-                <td className="p-4 text-right flex justify-end gap-2">
-                  <button onClick={() => handleViewRis(ris.id)} className="p-1.5 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded transition-colors" title="View">
-                    <Eye size={18} />
-                  </button>
-                  {ris.status === 'draft' && (
-                    <button 
-                      onClick={() => handleDownloadAndSend(ris)}
-                      className="flex items-center gap-1 px-3 py-1.5 bg-blue-50 text-blue-700 hover:bg-blue-100 rounded text-xs font-medium transition-colors"
-                    >
-                      <Send size={14} />
-                      Download & Send
-                    </button>
-                  )}
-                  {ris.status !== 'draft' && (
-                    <button onClick={async () => {
-                      try {
-                        const res = await api.get(`/ris/${ris.id}`);
-                        exportRIStoPDF(res.data);
-                      } catch (err) {
-                        toast.error('Failed to export PDF');
-                      }
-                    }} className="p-1.5 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded transition-colors" title="Export to PDF (Appendix 63)">
-                      <Download size={18} />
-                    </button>
-                  )}
-                </td>
+        <div className="overflow-x-auto">
+          <table className="w-full text-left border-collapse min-w-[620px]">
+            <thead>
+              <tr className="bg-gray-50 border-b border-gray-200">
+                <th className="p-3.5 sm:p-4 text-xs font-bold text-gray-500 uppercase tracking-wider">RIS No.</th>
+                <th className="p-3.5 sm:p-4 text-xs font-bold text-gray-500 uppercase tracking-wider">Date</th>
+                <th className="p-3.5 sm:p-4 text-xs font-bold text-gray-500 uppercase tracking-wider">Purpose</th>
+                <th className="p-3.5 sm:p-4 text-xs font-bold text-gray-500 uppercase tracking-wider">Status</th>
+                <th className="p-3.5 sm:p-4 text-xs font-bold text-gray-500 uppercase tracking-wider text-right">Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="divide-y divide-gray-200">
+              {records.length === 0 ? (
+                <tr>
+                  <td colSpan={5} className="p-8 text-center text-gray-500 text-sm">
+                    No RIS records created yet. Click "Create New RIS" to draft your first slip.
+                  </td>
+                </tr>
+              ) : records.map(ris => (
+                <tr key={ris.id} className="hover:bg-gray-50 transition-colors">
+                  <td className="p-3.5 sm:p-4 font-mono font-medium text-gray-900 text-xs sm:text-sm">
+                    {ris.ris_no || <span className="text-gray-400 italic">Pending</span>}
+                  </td>
+                  <td className="p-3.5 sm:p-4 text-xs sm:text-sm text-gray-600">
+                    {new Date(ris.createdAt).toLocaleDateString()}
+                  </td>
+                  <td className="p-3.5 sm:p-4 text-xs sm:text-sm text-gray-600 max-w-xs truncate">
+                    {ris.purpose || '-'}
+                  </td>
+                  <td className="p-3.5 sm:p-4">
+                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium capitalize whitespace-nowrap
+                      ${ris.status === 'draft' ? 'bg-gray-100 text-gray-800' : 
+                        ris.status === 'sent' ? 'bg-blue-100 text-blue-800' : 
+                        ris.status === 'received' ? 'bg-yellow-100 text-yellow-800' : 
+                        ris.status === 'rejected' ? 'bg-red-100 text-red-800' : 
+                        'bg-green-100 text-green-800'}`}>
+                      {ris.status.replace('_', ' ')}
+                    </span>
+                  </td>
+                  <td className="p-3.5 sm:p-4 text-right whitespace-nowrap">
+                    <div className="flex items-center justify-end gap-1.5">
+                      <button 
+                        onClick={() => handleViewRis(ris.id)} 
+                        className="p-1.5 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors" 
+                        title="View Requisition Details"
+                      >
+                        <Eye size={18} />
+                      </button>
+                      {ris.status === 'draft' && (
+                        <button 
+                          onClick={() => handleDownloadAndSend(ris)}
+                          className="flex items-center gap-1 px-3 py-1.5 bg-blue-50 text-blue-700 hover:bg-blue-100 rounded-lg text-xs font-semibold transition-colors"
+                        >
+                          <Send size={14} />
+                          <span>Send to Admin</span>
+                        </button>
+                      )}
+                      {ris.status !== 'draft' && (
+                        <button 
+                          onClick={async () => {
+                            try {
+                              const res = await api.get(`/ris/${ris.id}`);
+                              exportRIStoPDF(res.data);
+                            } catch (err) {
+                              toast.error('Failed to export PDF');
+                            }
+                          }} 
+                          className="p-1.5 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors" 
+                          title="Export to PDF (Appendix 63)"
+                        >
+                          <Download size={18} />
+                        </button>
+                      )}
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
 
+      {/* Viewing RIS Modal */}
       {viewingRis && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 print:bg-white print:static print:inset-auto print:flex-col print:z-auto">
-          <div className="bg-white rounded-xl shadow-xl w-full max-w-4xl max-h-[90vh] flex flex-col print:shadow-none print:max-h-none print:w-full">
-            <div className="px-6 py-4 border-b border-gray-100 flex justify-between items-center print:hidden">
-              <h2 className="text-lg font-bold text-gray-800">Requisition and Issue Slip Details</h2>
-              <div className="flex gap-2">
-                <button onClick={() => exportRIStoPDF(viewingRis)} className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg text-sm font-medium hover:bg-green-700 transition-colors">
-                  <Download size={16} /> Export PDF
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-xs flex items-center justify-center z-50 p-3 sm:p-6 print:bg-white print:static print:inset-auto print:flex-col print:z-auto print:p-0">
+          <div className="bg-white rounded-xl sm:rounded-2xl shadow-2xl w-full max-w-4xl max-h-[92vh] flex flex-col print:shadow-none print:max-h-none print:w-full overflow-hidden">
+            
+            {/* Modal Header */}
+            <div className="px-4 sm:px-6 py-3.5 sm:py-4 border-b border-gray-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-gray-50/50 print:hidden">
+              <div>
+                <h2 className="text-base sm:text-lg font-bold text-gray-800">Appendix 63 - Requisition Slip</h2>
+                <p className="text-xs text-gray-500">RIS ID: {viewingRis.ris_no || `RIS-${viewingRis.id}`}</p>
+              </div>
+
+              <div className="flex items-center gap-2 self-end sm:self-auto">
+                <button 
+                  onClick={() => exportRIStoPDF(viewingRis)} 
+                  className="flex items-center gap-1.5 px-3 sm:px-4 py-1.5 sm:py-2 bg-green-600 text-white rounded-lg text-xs sm:text-sm font-semibold hover:bg-green-700 transition-colors shadow-xs"
+                >
+                  <Download size={15} /> <span>PDF</span>
                 </button>
-                <button onClick={handlePrint} className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors">
-                  <Printer size={16} /> Print
+                <button 
+                  onClick={handlePrint} 
+                  className="flex items-center gap-1.5 px-3 sm:px-4 py-1.5 sm:py-2 bg-blue-600 text-white rounded-lg text-xs sm:text-sm font-semibold hover:bg-blue-700 transition-colors shadow-xs"
+                >
+                  <Printer size={15} /> <span>Print</span>
                 </button>
-                <button onClick={() => setViewingRis(null)} className="text-gray-400 hover:text-gray-600 p-2">
+                <button 
+                  onClick={() => setViewingRis(null)} 
+                  className="text-gray-400 hover:text-gray-600 p-1.5 rounded-lg hover:bg-gray-100 transition-colors ml-1"
+                >
                   <X size={20} />
                 </button>
               </div>
             </div>
             
-            <div className="p-8 overflow-y-auto print:overflow-visible print:p-0">
+            {/* Modal Body */}
+            <div className="p-4 sm:p-6 lg:p-8 overflow-y-auto print:overflow-visible print:p-0" style={{ fontFamily: '"Times New Roman", Times, serif' }}>
               <div className="text-center mb-6">
-                <h1 className="text-xl font-bold uppercase">Requisition and Issue Slip</h1>
-                <p className="text-sm mt-1">Entity Name: <span className="font-semibold border-b border-black px-4">{viewingRis.entity_name || '_________________'}</span></p>
-                <p className="text-sm mt-1">Fund Cluster: <span className="font-semibold border-b border-black px-4">{viewingRis.fund_cluster || '_________________'}</span></p>
+                <h1 className="text-lg sm:text-xl font-bold uppercase tracking-wide">Requisition and Issue Slip</h1>
+                <div className="mt-2 text-xs sm:text-sm space-y-1">
+                  <p>Entity Name: <span className="font-semibold border-b border-black px-2">{viewingRis.entity_name || '_________________'}</span></p>
+                  <p>Fund Cluster: <span className="font-semibold border-b border-black px-2">{viewingRis.fund_cluster || '_________________'}</span></p>
+                </div>
               </div>
 
-              <div className="flex justify-between text-sm mb-4">
+              <div className="flex flex-col sm:flex-row justify-between text-xs sm:text-sm gap-2 mb-4">
                 <div>
-                  <p>Division: <span className="font-semibold border-b border-black px-4">{viewingRis.division || '_________________'}</span></p>
-                  <p className="mt-1">Office: <span className="font-semibold border-b border-black px-4">{viewingRis.office || '_________________'}</span></p>
+                  <p>Division: <span className="font-semibold border-b border-black px-2">{viewingRis.division || '_________________'}</span></p>
+                  <p className="mt-1">Office: <span className="font-semibold border-b border-black px-2">{viewingRis.office || '_________________'}</span></p>
                 </div>
-                <div className="text-right">
-                  <p>Responsibility Center Code: <span className="font-semibold border-b border-black px-4">{viewingRis.responsibility_center_code || '_________________'}</span></p>
-                  <p className="mt-1">RIS No.: <span className="font-semibold border-b border-black px-4">{viewingRis.ris_no || '_________________'}</span></p>
+                <div className="sm:text-right">
+                  <p>Responsibility Center: <span className="font-semibold border-b border-black px-2">{viewingRis.responsibility_center_code || '_________________'}</span></p>
+                  <p className="mt-1">RIS No.: <span className="font-semibold border-b border-black px-2">{viewingRis.ris_no || 'Pending'}</span></p>
                 </div>
               </div>
 
-              <table className="w-full text-left border-collapse border border-black text-sm mb-4">
-                <thead>
-                  <tr>
-                    <th colSpan={4} className="border border-black p-2 text-center font-bold">Requisition</th>
-                    <th colSpan={2} className="border border-black p-2 text-center font-bold">Stock Available?</th>
-                    <th colSpan={2} className="border border-black p-2 text-center font-bold">Issue</th>
-                  </tr>
-                  <tr className="bg-gray-50">
-                    <th className="border border-black p-2 text-center">Stock No.</th>
-                    <th className="border border-black p-2 text-center">Unit</th>
-                    <th className="border border-black p-2 text-center">Description</th>
-                    <th className="border border-black p-2 text-center">Quantity</th>
-                    <th className="border border-black p-2 text-center">Yes</th>
-                    <th className="border border-black p-2 text-center">No</th>
-                    <th className="border border-black p-2 text-center">Quantity</th>
-                    <th className="border border-black p-2 text-center">Remarks</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {viewingRis.items && viewingRis.items.length > 0 ? viewingRis.items.map((item: any, idx: number) => (
-                    <tr key={idx}>
-                      <td className="border border-black p-2 text-center">{item.stock_no}</td>
-                      <td className="border border-black p-2 text-center">{item.unit}</td>
-                      <td className="border border-black p-2">{item.description}</td>
-                      <td className="border border-black p-2 text-center">{item.quantity_requisition}</td>
-                      <td className="border border-black p-2 text-center">{item.stock_available_yes ? '✓' : ''}</td>
-                      <td className="border border-black p-2 text-center">{item.stock_available_no ? '✓' : ''}</td>
-                      <td className="border border-black p-2 text-center">{item.quantity_issue}</td>
-                      <td className="border border-black p-2">{item.remarks}</td>
-                    </tr>
-                  )) : (
+              <div className="overflow-x-auto pb-2 mb-4 border border-black/20 rounded-xs">
+                <table className="w-full min-w-[650px] text-left border-collapse border border-black text-xs sm:text-sm">
+                  <thead>
                     <tr>
-                      <td colSpan={8} className="border border-black p-4 text-center italic text-gray-500">No items requested</td>
+                      <th colSpan={4} className="border border-black p-2 text-center font-bold bg-gray-50">Requisition</th>
+                      <th colSpan={2} className="border border-black p-2 text-center font-bold bg-gray-50">Stock Available?</th>
+                      <th colSpan={2} className="border border-black p-2 text-center font-bold bg-gray-50">Issue</th>
                     </tr>
-                  )}
-                </tbody>
-              </table>
+                    <tr className="bg-gray-100/70">
+                      <th className="border border-black p-1.5 text-center w-20">Stock No.</th>
+                      <th className="border border-black p-1.5 text-center w-16">Unit</th>
+                      <th className="border border-black p-1.5 text-center">Description</th>
+                      <th className="border border-black p-1.5 text-center w-16">Quantity</th>
+                      <th className="border border-black p-1.5 text-center w-12">Yes</th>
+                      <th className="border border-black p-1.5 text-center w-12">No</th>
+                      <th className="border border-black p-1.5 text-center w-16">Quantity</th>
+                      <th className="border border-black p-1.5 text-center w-24">Remarks</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {viewingRis.items && viewingRis.items.length > 0 ? viewingRis.items.map((item: any, idx: number) => (
+                      <tr key={idx}>
+                        <td className="border border-black p-1.5 text-center font-mono">{item.stock_no}</td>
+                        <td className="border border-black p-1.5 text-center">{item.unit}</td>
+                        <td className="border border-black p-1.5">{item.description}</td>
+                        <td className="border border-black p-1.5 text-center font-bold">{item.quantity_requisition}</td>
+                        <td className="border border-black p-1.5 text-center">{item.stock_available_yes ? '✓' : ''}</td>
+                        <td className="border border-black p-1.5 text-center">{item.stock_available_no ? '✓' : ''}</td>
+                        <td className="border border-black p-1.5 text-center font-bold">{item.quantity_issue}</td>
+                        <td className="border border-black p-1.5 text-xs">{item.remarks}</td>
+                      </tr>
+                    )) : (
+                      <tr>
+                        <td colSpan={8} className="border border-black p-4 text-center italic text-gray-500">No items requested</td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
 
               <div className="mb-6">
-                <p className="text-sm font-bold">Purpose:</p>
-                <p className="text-sm border-b border-black min-h-[1.5rem]">{viewingRis.purpose}</p>
+                <p className="text-xs sm:text-sm font-bold">Purpose:</p>
+                <p className="text-xs sm:text-sm border-b border-black min-h-[1.5rem] py-1">{viewingRis.purpose || '-'}</p>
               </div>
 
-              <table className="w-full text-left border-collapse border border-black text-sm">
-                <tbody>
-                  <tr>
-                    <td className="border border-black p-2 w-1/6"></td>
-                    <td className="border border-black p-2 font-bold w-1/4 text-center">Requested by:</td>
-                    <td className="border border-black p-2 font-bold w-1/4 text-center">Approved by:</td>
-                    <td className="border border-black p-2 font-bold w-1/4 text-center">Issued by:</td>
-                    <td className="border border-black p-2 font-bold w-1/4 text-center">Received by:</td>
-                  </tr>
-                  <tr>
-                    <td className="border border-black p-2 font-bold">Signature:</td>
-                    <td className="border border-black p-2 h-12"></td>
-                    <td className="border border-black p-2 h-12"></td>
-                    <td className="border border-black p-2 h-12"></td>
-                    <td className="border border-black p-2 h-12"></td>
-                  </tr>
-                  <tr>
-                    <td className="border border-black p-2 font-bold">Printed Name:</td>
-                    <td className="border border-black p-2 text-center">{viewingRis.requested_by_name || viewingRis.employee?.full_name}</td>
-                    <td className="border border-black p-2 text-center">{viewingRis.approved_by_name}</td>
-                    <td className="border border-black p-2 text-center">{viewingRis.issued_by_name}</td>
-                    <td className="border border-black p-2 text-center">{viewingRis.received_by_name}</td>
-                  </tr>
-                  <tr>
-                    <td className="border border-black p-2 font-bold">Designation:</td>
-                    <td className="border border-black p-2 text-center">{viewingRis.requested_by_designation || viewingRis.employee?.designation}</td>
-                    <td className="border border-black p-2 text-center">{viewingRis.approved_by_designation}</td>
-                    <td className="border border-black p-2 text-center">{viewingRis.issued_by_designation}</td>
-                    <td className="border border-black p-2 text-center">{viewingRis.received_by_designation}</td>
-                  </tr>
-                  <tr>
-                    <td className="border border-black p-2 font-bold">Date:</td>
-                    <td className="border border-black p-2 text-center">{viewingRis.requested_by_date}</td>
-                    <td className="border border-black p-2 text-center">{viewingRis.approved_by_date}</td>
-                    <td className="border border-black p-2 text-center">{viewingRis.issued_by_date}</td>
-                    <td className="border border-black p-2 text-center">{viewingRis.received_by_date}</td>
-                  </tr>
-                </tbody>
-              </table>
+              <div className="overflow-x-auto pb-2 border border-black/20 rounded-xs">
+                <table className="w-full min-w-[550px] text-left border-collapse border border-black text-xs sm:text-sm">
+                  <tbody>
+                    <tr className="bg-gray-50">
+                      <td className="border border-black p-1.5 w-24"></td>
+                      <td className="border border-black p-1.5 font-bold text-center">Requested by:</td>
+                      <td className="border border-black p-1.5 font-bold text-center">Approved by:</td>
+                      <td className="border border-black p-1.5 font-bold text-center">Issued by:</td>
+                      <td className="border border-black p-1.5 font-bold text-center">Received by:</td>
+                    </tr>
+                    <tr>
+                      <td className="border border-black p-1.5 font-bold">Signature:</td>
+                      <td className="border border-black p-1.5 h-10"></td>
+                      <td className="border border-black p-1.5 h-10"></td>
+                      <td className="border border-black p-1.5 h-10"></td>
+                      <td className="border border-black p-1.5 h-10"></td>
+                    </tr>
+                    <tr>
+                      <td className="border border-black p-1.5 font-bold">Printed Name:</td>
+                      <td className="border border-black p-1.5 text-center">{viewingRis.requested_by_name || viewingRis.employee?.full_name}</td>
+                      <td className="border border-black p-1.5 text-center">{viewingRis.approved_by_name || '-'}</td>
+                      <td className="border border-black p-1.5 text-center">{viewingRis.issued_by_name || '-'}</td>
+                      <td className="border border-black p-1.5 text-center">{viewingRis.received_by_name || '-'}</td>
+                    </tr>
+                    <tr>
+                      <td className="border border-black p-1.5 font-bold">Designation:</td>
+                      <td className="border border-black p-1.5 text-center">{viewingRis.requested_by_designation || viewingRis.employee?.designation}</td>
+                      <td className="border border-black p-1.5 text-center">{viewingRis.approved_by_designation || '-'}</td>
+                      <td className="border border-black p-1.5 text-center">{viewingRis.issued_by_designation || '-'}</td>
+                      <td className="border border-black p-1.5 text-center">{viewingRis.received_by_designation || '-'}</td>
+                    </tr>
+                    <tr>
+                      <td className="border border-black p-1.5 font-bold">Date:</td>
+                      <td className="border border-black p-1.5 text-center">{viewingRis.requested_by_date || '-'}</td>
+                      <td className="border border-black p-1.5 text-center">{viewingRis.approved_by_date || '-'}</td>
+                      <td className="border border-black p-1.5 text-center">{viewingRis.issued_by_date || '-'}</td>
+                      <td className="border border-black p-1.5 text-center">{viewingRis.received_by_date || '-'}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
       )}
+
       <ConfirmModal
         isOpen={!!confirmSendRis}
-        title="Send RIS"
-        message="This will send your RIS to your Department Admin and open the print dialog. Proceed?"
+        title="Send RIS to Custodian"
+        message="This will submit your RIS to the Admin Custodian and open the print dialog. Proceed?"
         onConfirm={proceedWithSend}
         onCancel={() => setConfirmSendRis(null)}
       />

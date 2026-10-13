@@ -86,29 +86,29 @@ export default function AuthPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 py-10 px-4 sm:px-6 lg:px-8 font-sans">
-      <div className="max-w-md w-full space-y-6 bg-white p-8 sm:p-10 rounded-2xl shadow-xl border border-gray-200">
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 py-6 sm:py-10 px-3 sm:px-6 lg:px-8 font-sans">
+      <div className="max-w-md w-full space-y-5 sm:space-y-6 bg-white p-5 sm:p-8 md:p-10 rounded-2xl shadow-xl border border-gray-200">
         <div>
           <div className="flex justify-between items-center mb-3">
-            <Link to="/" className="inline-flex items-center text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">
+            <Link to="/" className="inline-flex items-center text-xs sm:text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">
               <ArrowLeft className="w-4 h-4 mr-1.5" />
               Back to RIS Form
             </Link>
-            <span className="inline-flex items-center gap-1 text-[11px] font-semibold uppercase tracking-wider text-blue-700 bg-blue-50 px-2.5 py-1 rounded-full border border-blue-200">
+            <span className="inline-flex items-center gap-1 text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider text-blue-700 bg-blue-50 px-2 sm:px-2.5 py-1 rounded-full border border-blue-200">
               <Sparkles className="w-3 h-3 text-blue-600" /> Demo Replica
             </span>
           </div>
 
-          <h2 className="mt-2 text-center text-3xl font-extrabold text-[#1A2340]">
+          <h2 className="mt-2 text-center text-2xl sm:text-3xl font-extrabold text-[#1A2340]">
             RIS Portal
           </h2>
-          <p className="mt-1 text-center text-sm text-gray-500">
+          <p className="mt-1 text-center text-xs sm:text-sm text-gray-500">
             {isLogin ? 'Requisition & Issue Slip Management System' : 'Create a generic demo account'}
           </p>
         </div>
 
         {/* Demo Fast-Switch Panel for Portfolio Walkthrough */}
-        <div className="bg-gradient-to-br from-slate-50 to-blue-50/50 p-4 rounded-xl border border-blue-100/80 shadow-xs">
+        <div className="bg-gradient-to-br from-slate-50 to-blue-50/50 p-3.5 sm:p-4 rounded-xl border border-blue-100/80 shadow-xs">
           <div className="flex items-center justify-between mb-2.5">
             <p className="text-xs font-bold text-gray-700 flex items-center gap-1.5">
               <UserCheck className="w-4 h-4 text-blue-600" />
@@ -123,7 +123,7 @@ export default function AuthPage() {
             </button>
           </div>
 
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
             <button
               type="button"
               onClick={() => handleQuickLogin('emp1', 'emp1', 'Citizen A (Employee)')}

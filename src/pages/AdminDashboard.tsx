@@ -56,7 +56,7 @@ export default function AdminDashboard() {
         });
 
         allRis.forEach((r: any) => {
-          const risDate = new Date(r.created_at || r.date);
+          const risDate = new Date(r.created_at || r.date || r.createdAt);
           const isCurrentMonth = risDate.getMonth() === currentMonth && risDate.getFullYear() === currentYear;
 
           if (r.status !== 'draft' && r.items && isCurrentMonth) {
@@ -91,117 +91,121 @@ export default function AdminDashboard() {
   }, []);
 
   return (
-    <div className="p-8">
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold text-[#1A2340]">Admin Dashboard</h1>
-        <p className="text-sm text-gray-500 mt-1">Welcome back, {user?.full_name}</p>
+    <div className="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto w-full">
+      <div className="mb-6 sm:mb-8">
+        <h1 className="text-xl sm:text-2xl font-bold text-[#1A2340]">Admin Dashboard</h1>
+        <p className="text-xs sm:text-sm text-gray-500 mt-1">Welcome back, {user?.full_name}</p>
       </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200 flex items-center gap-4">
-          <div className="w-12 h-12 bg-blue-50 text-blue-600 rounded-lg flex items-center justify-center">
+      {/* 4 Metrics Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8">
+        <div className="bg-white p-5 sm:p-6 rounded-xl shadow-xs border border-gray-200 flex items-center gap-4 hover:border-blue-300 transition-colors">
+          <div className="w-12 h-12 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center flex-shrink-0">
             <Clock size={24} />
           </div>
           <div>
-            <p className="text-sm text-gray-500 font-medium">Pending RIS</p>
-            <p className="text-2xl font-bold text-gray-900">{stats.pendingRis}</p>
+            <p className="text-xs sm:text-sm text-gray-500 font-medium">Pending RIS</p>
+            <p className="text-xl sm:text-2xl font-bold text-gray-900">{stats.pendingRis}</p>
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200 flex items-center gap-4">
-          <div className="w-12 h-12 bg-green-50 text-green-600 rounded-lg flex items-center justify-center">
+        <div className="bg-white p-5 sm:p-6 rounded-xl shadow-xs border border-gray-200 flex items-center gap-4 hover:border-green-300 transition-colors">
+          <div className="w-12 h-12 bg-green-50 text-green-600 rounded-xl flex items-center justify-center flex-shrink-0">
             <CheckCircle size={24} />
           </div>
           <div>
-            <p className="text-sm text-gray-500 font-medium">Approved RIS</p>
-            <p className="text-2xl font-bold text-gray-900">{stats.approvedRis}</p>
+            <p className="text-xs sm:text-sm text-gray-500 font-medium">Approved RIS</p>
+            <p className="text-xl sm:text-2xl font-bold text-gray-900">{stats.approvedRis}</p>
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200 flex items-center gap-4">
-          <div className="w-12 h-12 bg-purple-50 text-purple-600 rounded-lg flex items-center justify-center">
+        <div className="bg-white p-5 sm:p-6 rounded-xl shadow-xs border border-gray-200 flex items-center gap-4 hover:border-purple-300 transition-colors">
+          <div className="w-12 h-12 bg-purple-50 text-purple-600 rounded-xl flex items-center justify-center flex-shrink-0">
             <Package size={24} />
           </div>
           <div>
-            <p className="text-sm text-gray-500 font-medium">Total Items</p>
-            <p className="text-2xl font-bold text-gray-900">{stats.totalInventory}</p>
+            <p className="text-xs sm:text-sm text-gray-500 font-medium">Total Items</p>
+            <p className="text-xl sm:text-2xl font-bold text-gray-900">{stats.totalInventory}</p>
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200 flex items-center gap-4">
-          <div className="w-12 h-12 bg-red-50 text-red-600 rounded-lg flex items-center justify-center">
+        <div className="bg-white p-5 sm:p-6 rounded-xl shadow-xs border border-gray-200 flex items-center gap-4 hover:border-red-300 transition-colors">
+          <div className="w-12 h-12 bg-red-50 text-red-600 rounded-xl flex items-center justify-center flex-shrink-0">
             <Inbox size={24} />
           </div>
           <div>
-            <p className="text-sm text-gray-500 font-medium">Low Stock Items</p>
-            <p className="text-2xl font-bold text-gray-900">{stats.lowStock}</p>
+            <p className="text-xs sm:text-sm text-gray-500 font-medium">Low Stock Items</p>
+            <p className="text-xl sm:text-2xl font-bold text-gray-900">{stats.lowStock}</p>
           </div>
         </div>
       </div>
 
+      {/* Analytics Section: Most vs Least Requested */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-          <div className="flex items-center justify-between mb-4">
+        <div className="bg-white rounded-xl shadow-xs border border-gray-200 p-5 sm:p-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
             <div className="flex items-center gap-2">
-              <TrendingUp className="text-orange-500" size={20} />
-              <h2 className="text-lg font-bold text-gray-800">Most Requested Items</h2>
+              <TrendingUp className="text-orange-500 flex-shrink-0" size={20} />
+              <h2 className="text-base sm:text-lg font-bold text-gray-800">Most Requested Items</h2>
             </div>
             <button 
               onClick={() => navigate('/reports')}
-              className="flex items-center gap-1 text-xs font-medium text-blue-600 hover:text-blue-800 transition-colors"
+              className="flex items-center gap-1 text-xs font-semibold text-blue-600 hover:text-blue-800 transition-colors self-start sm:self-auto"
             >
               <FileText size={14} />
-              View Monthly Report
+              <span>Full Monthly Report</span>
             </button>
           </div>
-          <p className="text-sm text-gray-500 mb-4">Top 10 items frequently requisitioned this month.</p>
-          <div className="space-y-4">
+          <p className="text-xs text-gray-500 mb-4">Top 10 items frequently requisitioned this current month.</p>
+          
+          <div className="space-y-3">
             {analytics.mostRequested.length > 0 ? analytics.mostRequested.map((item, idx) => (
-              <div key={idx} className="flex items-center justify-between border-b border-gray-100 pb-3 last:border-0 last:pb-0">
-                <div>
-                  <p className="font-medium text-gray-800">{item.name}</p>
-                  <p className="text-xs text-gray-500">{item.stock_no}</p>
+              <div key={idx} className="flex items-center justify-between border-b border-gray-100 pb-2.5 last:border-0 last:pb-0 gap-3">
+                <div className="min-w-0 flex-1">
+                  <p className="font-semibold text-gray-800 text-xs sm:text-sm truncate">{item.name}</p>
+                  <p className="text-[11px] text-gray-400 font-mono">{item.stock_no}</p>
                 </div>
-                <div className="text-right">
-                  <p className="text-sm font-bold text-orange-600">{item.totalQty} requested</p>
-                  <p className="text-xs text-gray-500">{item.remaining} left in stock</p>
+                <div className="text-right flex-shrink-0">
+                  <p className="text-xs sm:text-sm font-bold text-orange-600">{item.totalQty} requested</p>
+                  <p className="text-[11px] text-gray-500">{item.remaining} in stock</p>
                 </div>
               </div>
             )) : (
-              <p className="text-sm text-gray-500 italic">No data available for this month.</p>
+              <p className="text-xs sm:text-sm text-gray-500 italic py-4">No requisition requests recorded for this month.</p>
             )}
           </div>
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-          <div className="flex items-center justify-between mb-4">
+        <div className="bg-white rounded-xl shadow-xs border border-gray-200 p-5 sm:p-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
             <div className="flex items-center gap-2">
-              <TrendingDown className="text-blue-500" size={20} />
-              <h2 className="text-lg font-bold text-gray-800">Least Requested Items</h2>
+              <TrendingDown className="text-blue-500 flex-shrink-0" size={20} />
+              <h2 className="text-base sm:text-lg font-bold text-gray-800">Least Requested Items</h2>
             </div>
             <button 
               onClick={() => navigate('/reports')}
-              className="flex items-center gap-1 text-xs font-medium text-blue-600 hover:text-blue-800 transition-colors"
+              className="flex items-center gap-1 text-xs font-semibold text-blue-600 hover:text-blue-800 transition-colors self-start sm:self-auto"
             >
               <FileText size={14} />
-              View Monthly Report
+              <span>Full Monthly Report</span>
             </button>
           </div>
-          <p className="text-sm text-gray-500 mb-4">Top 10 items with leftovers or rarely requisitioned this month.</p>
-          <div className="space-y-4">
+          <p className="text-xs text-gray-500 mb-4">Top 10 items rarely requisitioned or remaining in excess.</p>
+          
+          <div className="space-y-3">
             {analytics.leastRequested.length > 0 ? analytics.leastRequested.map((item, idx) => (
-              <div key={idx} className="flex items-center justify-between border-b border-gray-100 pb-3 last:border-0 last:pb-0">
-                <div>
-                  <p className="font-medium text-gray-800">{item.name}</p>
-                  <p className="text-xs text-gray-500">{item.stock_no}</p>
+              <div key={idx} className="flex items-center justify-between border-b border-gray-100 pb-2.5 last:border-0 last:pb-0 gap-3">
+                <div className="min-w-0 flex-1">
+                  <p className="font-semibold text-gray-800 text-xs sm:text-sm truncate">{item.name}</p>
+                  <p className="text-[11px] text-gray-400 font-mono">{item.stock_no}</p>
                 </div>
-                <div className="text-right">
-                  <p className="text-sm font-bold text-blue-600">{item.totalQty} requested</p>
-                  <p className="text-xs text-gray-500">{item.remaining} left in stock</p>
+                <div className="text-right flex-shrink-0">
+                  <p className="text-xs sm:text-sm font-bold text-blue-600">{item.totalQty} requested</p>
+                  <p className="text-[11px] text-gray-500">{item.remaining} in stock</p>
                 </div>
               </div>
             )) : (
-              <p className="text-sm text-gray-500 italic">No data available for this month.</p>
+              <p className="text-xs sm:text-sm text-gray-500 italic py-4">No data recorded for this month.</p>
             )}
           </div>
         </div>

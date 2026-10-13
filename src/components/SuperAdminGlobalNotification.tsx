@@ -13,7 +13,6 @@ export default function SuperAdminGlobalNotification() {
   useEffect(() => {
     if (user?.role === 'superadmin' && !dismissed) {
       fetchData();
-      // Optional: Poll every minute to check for new deletion warnings
       const interval = setInterval(fetchData, 60000);
       return () => clearInterval(interval);
     }
@@ -21,9 +20,7 @@ export default function SuperAdminGlobalNotification() {
 
   const fetchData = async () => {
     try {
-      // Trigger cleanup check to generate any pending notifications
       await api.get('/users/stats'); 
-      
       const [notifRes, risRes] = await Promise.all([
         api.get('/notifications'),
         api.get('/ris')
@@ -63,33 +60,34 @@ export default function SuperAdminGlobalNotification() {
       setTimeout(() => handleDownloadRIS(ris), index * 500);
     });
     
-    // Auto-dismiss after downloading
     setTimeout(() => setDismissed(true), 1000);
   };
 
   if (user?.role !== 'superadmin' || notifications.length === 0 || dismissed) return null;
 
   return (
-    <div className="fixed inset-0 bg-[#1A2340] z-[9999] flex flex-col items-center justify-center p-6 text-center animate-in fade-in duration-500">
-      <div className="max-w-3xl w-full">
-        <div className="w-24 h-24 bg-orange-500 rounded-full flex items-center justify-center mx-auto mb-8 animate-bounce shadow-[0_0_30px_rgba(249,115,22,0.6)]">
-          <AlertTriangle size={48} className="text-white" />
+    <div className="fixed inset-0 bg-[#1A2340] z-[9999] flex flex-col items-center justify-center p-4 sm:p-6 text-center animate-in fade-in duration-500 overflow-y-auto">
+      <div className="max-w-3xl w-full my-auto">
+        <div className="w-16 h-16 sm:w-20 sm:h-20 bg-orange-500 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6 shadow-[0_0_30px_rgba(249,115,22,0.6)]">
+          <AlertTriangle size={36} className="text-white" />
         </div>
-        <h1 className="text-4xl md:text-5xl font-black text-white mb-6 tracking-tight">URGENT: 2-DAY RIS DELETION WARNING</h1>
-        <p className="text-xl text-orange-200 mb-10 leading-relaxed">
-          The following Requisition and Issue Slips (RIS) are approaching their <strong>48-hour retention limit</strong> and are scheduled for permanent auto-deletion. 
-          Please download and archive them immediately to prevent data loss.
+        <h1 className="text-2xl sm:text-3xl md:text-5xl font-black text-white mb-3 sm:mb-4 tracking-tight leading-tight">
+          URGENT: 2-DAY RIS RETENTION NOTICE
+        </h1>
+        <p className="text-sm sm:text-lg text-orange-200 mb-6 sm:mb-8 leading-relaxed max-w-2xl mx-auto">
+          The following Requisition and Issue Slips (RIS) are approaching the <strong>48-hour retention deadline</strong>. 
+          Please download and archive them to preserve system audit logs.
         </p>
         
-        <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 mb-10 max-h-[40vh] overflow-y-auto border border-white/20 shadow-2xl">
-          <div className="space-y-4">
+        <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 sm:p-6 mb-6 sm:mb-8 max-h-[35vh] overflow-y-auto border border-white/20 shadow-2xl">
+          <div className="space-y-3">
             {notifications.map(n => (
-              <div key={n.id} className="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-white/5 rounded-xl border border-white/10 text-left gap-4 hover:bg-white/10 transition-colors">
-                <div className="flex items-center gap-4">
-                  <div className="w-3 h-3 rounded-full bg-orange-500 shadow-[0_0_10px_rgba(249,115,22,0.8)] animate-pulse" />
-                  <span className="text-white font-medium text-lg">{n.message}</span>
+              <div key={n.id} className="flex flex-col sm:flex-row sm:items-center justify-between p-3.5 bg-white/5 rounded-xl border border-white/10 text-left gap-2 sm:gap-4 hover:bg-white/10 transition-colors">
+                <div className="flex items-center gap-3">
+                  <div className="w-2.5 h-2.5 rounded-full bg-orange-500 shadow-[0_0_10px_rgba(249,115,22,0.8)] animate-pulse flex-shrink-0" />
+                  <span className="text-white font-medium text-sm sm:text-base">{n.message}</span>
                 </div>
-                <span className="text-orange-300 text-sm font-mono bg-orange-500/20 px-3 py-1 rounded-lg whitespace-nowrap">
+                <span className="text-orange-300 text-xs font-mono bg-orange-500/20 px-2.5 py-0.5 rounded-md self-start sm:self-auto whitespace-nowrap">
                   {new Date(n.createdAt).toLocaleTimeString()}
                 </span>
               </div>
@@ -97,18 +95,18 @@ export default function SuperAdminGlobalNotification() {
           </div>
         </div>
 
-        <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center">
           <button 
             onClick={handleDownloadAllPending}
-            className="w-full sm:w-auto px-10 py-5 bg-gradient-to-r from-orange-500 to-red-600 text-white rounded-xl font-black text-lg hover:from-orange-600 hover:to-red-700 transition-all transform hover:scale-105 active:scale-95 shadow-[0_10px_40px_rgba(249,115,22,0.4)] flex items-center justify-center gap-3"
+            className="w-full sm:w-auto px-6 sm:px-8 py-3.5 sm:py-4 bg-gradient-to-r from-orange-500 to-red-600 text-white rounded-xl font-bold text-sm sm:text-base hover:from-orange-600 hover:to-red-700 transition-all shadow-[0_10px_30px_rgba(249,115,22,0.4)] flex items-center justify-center gap-2"
           >
-            <Download size={28} /> DOWNLOAD ALL PENDING RIS
+            <Download size={20} /> <span>DOWNLOAD ALL PENDING RIS</span>
           </button>
           <button 
             onClick={() => setDismissed(true)} 
-            className="w-full sm:w-auto px-8 py-5 bg-white/10 text-white hover:bg-white/20 rounded-xl font-bold text-lg transition-all transform hover:scale-105 active:scale-95 backdrop-blur-sm border border-white/20"
+            className="w-full sm:w-auto px-6 sm:px-8 py-3.5 sm:py-4 bg-white/10 text-white hover:bg-white/20 rounded-xl font-semibold text-sm sm:text-base transition-all border border-white/20"
           >
-            I UNDERSTAND, PROCEED TO APP
+            I UNDERSTAND, CONTINUE
           </button>
         </div>
       </div>
