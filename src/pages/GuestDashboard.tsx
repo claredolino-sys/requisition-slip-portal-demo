@@ -138,9 +138,9 @@ export default function GuestDashboard() {
   return (
     <div className={`flex flex-col h-full overflow-hidden relative ${user ? 'bg-white' : 'bg-gray-100 w-screen h-screen'}`}>
       
-      {/* Top Navbar for Public / Guest Visitors */}
+      {/* Top Navbar for Public / Guest Visitors (Visible only on mobile devices) */}
       {!user && (
-        <header className="bg-[#1A2340] text-white px-4 py-3 flex items-center justify-between z-30 flex-shrink-0 shadow-sm border-b border-white/10">
+        <header className="flex md:hidden bg-[#1A2340] text-white px-4 py-3 items-center justify-between z-30 flex-shrink-0 shadow-sm border-b border-white/10">
           <div className="flex items-center gap-2.5">
             <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center font-bold text-sm shadow-xs flex-shrink-0">
               RIS
@@ -152,7 +152,7 @@ export default function GuestDashboard() {
           </div>
           <button
             onClick={() => navigate('/login')}
-            className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-semibold shadow-xs transition-colors"
+            className="flex md:hidden items-center gap-1.5 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-semibold shadow-xs transition-colors"
           >
             <LogIn size={14} />
             <span>Sign In / Demo Roles</span>
@@ -516,7 +516,7 @@ export default function GuestDashboard() {
               {!user && (
                 <button 
                   onClick={() => navigate('/login')} 
-                  className="text-xs sm:text-sm font-semibold text-blue-600 hover:text-blue-800"
+                  className="hidden md:inline-block text-xs sm:text-sm font-semibold text-blue-600 hover:text-blue-800"
                 >
                   Sign In
                 </button>
