@@ -13,8 +13,7 @@
 
 ## 📌 Live Demo & Overview
 
-- **Live Demo Link:** *[Insert your Vercel/Netlify URL here]*
-- **Portfolio Video Walkthrough:** *[Insert optional video/Loom link here]*
+- **Live Demo Link: https://requisition-slip-portal-demo.netlify.app
 
 This system streamlines standard organizational requisition flows, replacing manual paper routing with role-based digital tracking, dynamic stock availability validation, automatic inventory deductions upon approval, automated PDF generation, and historical analytics reporting.
 
