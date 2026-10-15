@@ -128,6 +128,21 @@ This project is fully client-side ready and requires no backend database setup t
 
 ---
 
+## 📚 System Documentation & Specifications
+
+Comprehensive product, architecture, design, and implementation documents are available in the [`/docs`](./docs) folder:
+
+| Document | Description | Key Visualizations Included |
+| :--- | :--- | :--- |
+| [**PRD.md**](./docs/PRD.md) | **Product Requirements Document** | Requisition Lifecycle State Flow, Feature Dependency Diagram, User Persona Matrix |
+| [**TECHNICAL_REQUIREMENTS.md**](./docs/TECHNICAL_REQUIREMENTS.md) | **Technical Requirements Document (TRD)** | Layered System Architecture, Requisition Sequence Diagram, Component Hierarchy |
+| [**APP_FLOW.md**](./docs/APP_FLOW.md) | **Application Flow & User Journeys** | End-to-End User Flowchart, Persona Journey Sequences, Routing Guard Tree |
+| [**DESIGN_BRIEF.md**](./docs/DESIGN_BRIEF.md) | **Design Brief & UI/UX Specifications** | Responsive Breakpoints, Desktop Dual-Pane & Mobile Wireframes, Appendix 63 Blueprint |
+| [**BACKGROUND_SCHEMA.md**](./docs/BACKGROUND_SCHEMA.md) | **Background Schema & Data Architecture** | Entity-Relationship Diagram (ERD), Data Dictionary, Atomic Decrement Flow |
+| [**IMPLEMENTATION_PLAN.md**](./docs/IMPLEMENTATION_PLAN.md) | **Implementation & Delivery Roadmap** | Engineering Gantt Timeline, CI/CD Pipeline, Risk & Mitigation Matrix |
+
+---
+
 ## 📂 Project Architecture
 
 ```text
