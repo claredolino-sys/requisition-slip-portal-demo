@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Home, Inbox, Package, FileText, LogOut, ChevronLeft, ChevronRight, X, PlusCircle } from 'lucide-react';
+import { Home, Inbox, Package, FileText, LogOut, ChevronLeft, ChevronRight, X, PlusCircle, FileDown } from 'lucide-react';
 
 interface SidebarProps {
   mobileOpen?: boolean;
@@ -148,6 +148,27 @@ export default function Sidebar({ mobileOpen = false, setMobileOpen }: SidebarPr
               </Link>
             );
           })}
+
+          <div className="pt-2 mt-2 border-t border-white/10">
+            <a
+              href="/PRD.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              download="RIS_Portal_PRD_Appendix63.pdf"
+              title={isCollapsed && !mobileOpen ? 'PRD Document (PDF)' : ''}
+              className={`flex items-center gap-3 px-3 py-2 rounded-lg text-xs font-semibold text-blue-300 hover:text-white bg-blue-500/10 hover:bg-blue-600/30 border border-blue-400/20 transition-all ${
+                isCollapsed && !mobileOpen ? 'md:justify-center' : ''
+              }`}
+            >
+              <FileDown size={17} className="flex-shrink-0 text-blue-400" />
+              {(!isCollapsed || mobileOpen) && (
+                <div className="flex flex-col min-w-0">
+                  <span className="truncate font-medium">PRD Document (PDF)</span>
+                  <span className="text-[9px] text-blue-400/80 truncate">With Visual Diagrams</span>
+                </div>
+              )}
+            </a>
+          </div>
         </nav>
 
         {/* User Card & Logout at Footer */}

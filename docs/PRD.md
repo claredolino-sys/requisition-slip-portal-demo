@@ -6,6 +6,9 @@
 **Classification:** Sanitized Portfolio Demo (Derived from Government Agency Inventory Standard - Appendix 63)  
 **Author / Engineering Lead:** System Architecture & Engineering Team  
 **Last Updated:** October 2026  
+**Official PDF Edition:** [📥 Download Official PRD (PDF with Embedded Visual Diagrams)](./PRD.pdf)
+
+> 📄 **Executive PDF Available:** A publication-grade, 6-page PDF edition of this Product Requirements Document containing all embedded high-resolution visual diagrams (State Machine, User Persona Paths, NFR Pillars), formatted data tables, and institutional sign-off blocks is available at [`/docs/PRD.pdf`](./PRD.pdf) or [`/public/PRD.pdf`](../public/PRD.pdf).
 
 ---
 

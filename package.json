@@ -7,6 +7,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "clean": "rm -rf dist",
+    "docs:pdf": "tsx scripts/generate_prd_pdf.ts",
     "lint": "tsc --noEmit"
   },
   "dependencies": {

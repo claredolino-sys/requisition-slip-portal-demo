@@ -133,7 +133,8 @@ Comprehensive product, architecture, design, and implementation documents are av
 
 | Document | Description | Key Visualizations Included |
 | :--- | :--- | :--- |
-| [**PRD.md**](./docs/PRD.md) | **Product Requirements Document** | Requisition Lifecycle State Flow, Feature Dependency Diagram, User Persona Matrix |
+| [**PRD.pdf**](./docs/PRD.pdf) 📥 *(Direct Download)* | **Product Requirements Document (Executive PDF)** | **Publication-grade 6-page PDF** with embedded high-res diagrams, formatted tables, sign-off matrix |
+| [**PRD.md**](./docs/PRD.md) | **Product Requirements Document (Markdown)** | Requisition Lifecycle State Flow, Feature Dependency Diagram, User Persona Matrix |
 | [**TECHNICAL_REQUIREMENTS.md**](./docs/TECHNICAL_REQUIREMENTS.md) | **Technical Requirements Document (TRD)** | Layered System Architecture, Requisition Sequence Diagram, Component Hierarchy |
 | [**APP_FLOW.md**](./docs/APP_FLOW.md) | **Application Flow & User Journeys** | End-to-End User Flowchart, Persona Journey Sequences, Routing Guard Tree |
 | [**DESIGN_BRIEF.md**](./docs/DESIGN_BRIEF.md) | **Design Brief & UI/UX Specifications** | Responsive Breakpoints, Desktop Dual-Pane & Mobile Wireframes, Appendix 63 Blueprint |
