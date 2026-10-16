@@ -41,6 +41,10 @@ stateDiagram-v2
     Rejected --> [*] : Closed / Resubmit as New
 ```
 
+*Figure 1.0: End-to-End Requisition Lifecycle & Stock Decrement State Machine*
+
+![Figure 1.0: Requisition Lifecycle](./diagrams/requisition-lifecycle.png)
+
 ---
 
 ## 2. Problem Statement & Objectives
@@ -75,6 +79,10 @@ graph TD
     Admin -->|Review queue & deduct inventory| A1[Admin Inbox, Inventory Control & Stock Verification]
     SuperAdmin -->|Audit logs & high-level oversight| S1[System Analytics, User Directory & System Governance]
 ```
+
+*Figure 2.0: Stakeholder Roles, Portals & Architectural Interaction Pathways*
+
+![Figure 2.0: Stakeholder Roles and Pathways](./diagrams/stakeholder-personas.png)
 
 ### Detailed Persona Matrix
 
@@ -147,6 +155,10 @@ graph LR
     Resp --> R2[Conditional Layout Adaptations]
     Comp --> C1[Appendix 63 Government Standard]
 ```
+
+*Figure 3.0: Non-Functional Architectural Pillars & Quality Attributes*
+
+![Figure 3.0: Non-Functional Pillars](./diagrams/nfr-architecture.png)
 
 1. **Security & Privacy:** All government identifying numbers, personnel credentials, and proprietary marks have been scrubbed. Role authorization guards prevent unauthorized route access.
 2. **Performance:** Zero network latency in demo mode; fast initial bundle loading (`< 300ms` on modern networks); smooth 60fps animations.

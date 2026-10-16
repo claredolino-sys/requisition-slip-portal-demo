@@ -49,25 +49,40 @@ const DIAGRAM_3_CODE = `graph LR
     Resp --> R2[Conditional Layout Adaptations]
     Comp --> C1[Appendix 63 Government Standard]`;
 
-async function fetchDiagramBuffer(code: string): Promise<Buffer> {
+async function getDiagramBuffer(filePath: string, code: string): Promise<Buffer> {
+  const resolved = path.resolve(filePath);
+  if (fs.existsSync(resolved)) {
+    return fs.readFileSync(resolved);
+  }
+
   const b64 = Buffer.from(code).toString('base64');
   const url = `https://mermaid.ink/img/${b64}`;
-  const res = await fetch(url);
-  if (!res.ok) {
-    throw new Error(`Failed to fetch diagram: ${res.statusText}`);
+  
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    try {
+      const res = await fetch(url);
+      if (res.ok) {
+        const buf = Buffer.from(await res.arrayBuffer());
+        try {
+          fs.mkdirSync(path.dirname(resolved), { recursive: true });
+          fs.writeFileSync(resolved, buf);
+        } catch (_) {}
+        return buf;
+      }
+    } catch (_) {}
+    await new Promise(r => setTimeout(r, 1000));
   }
-  const arrayBuffer = await res.arrayBuffer();
-  return Buffer.from(arrayBuffer);
+  throw new Error(`Failed to load or fetch diagram: ${filePath}`);
 }
 
 export async function generatePrdPdf() {
-  console.log('Fetching diagram images from mermaid renderer...');
+  console.log('Loading diagram images...');
   const [d1Buf, d2Buf, d3Buf] = await Promise.all([
-    fetchDiagramBuffer(DIAGRAM_1_CODE),
-    fetchDiagramBuffer(DIAGRAM_2_CODE),
-    fetchDiagramBuffer(DIAGRAM_3_CODE)
+    getDiagramBuffer('public/diagrams/requisition-lifecycle.png', DIAGRAM_1_CODE),
+    getDiagramBuffer('public/diagrams/stakeholder-personas.png', DIAGRAM_2_CODE),
+    getDiagramBuffer('public/diagrams/nfr-architecture.png', DIAGRAM_3_CODE)
   ]);
-  console.log('Diagrams fetched successfully. Initializing jsPDF...');
+  console.log('Diagrams loaded successfully. Initializing jsPDF...');
 
   const doc = new jsPDF({
     orientation: 'portrait',
@@ -742,21 +757,27 @@ export async function generatePrdPdf() {
     doc.text(pageStr, MARGIN_LEFT + CONTENT_WIDTH - doc.getTextWidth(pageStr), PAGE_HEIGHT - 8);
   }
 
-  // Save to /docs/PRD.pdf and /public/PRD.pdf
+  // Save to docs/PRD.pdf and public/PRD.pdf (both in applet root and filesystem root)
   const pdfBytes = Buffer.from(doc.output('arraybuffer'));
 
-  const docsPath = path.resolve('/docs/PRD.pdf');
-  const publicPath = path.resolve('/public/PRD.pdf');
+  const targetPaths = [
+    path.resolve(process.cwd(), 'docs/PRD.pdf'),
+    path.resolve(process.cwd(), 'public/PRD.pdf'),
+    path.resolve('/docs/PRD.pdf'),
+    path.resolve('/public/PRD.pdf')
+  ];
 
-  fs.mkdirSync(path.dirname(docsPath), { recursive: true });
-  fs.mkdirSync(path.dirname(publicPath), { recursive: true });
-
-  fs.writeFileSync(docsPath, pdfBytes);
-  fs.writeFileSync(publicPath, pdfBytes);
+  for (const tPath of targetPaths) {
+    try {
+      fs.mkdirSync(path.dirname(tPath), { recursive: true });
+      fs.writeFileSync(tPath, pdfBytes);
+      console.log(`Saved to: ${tPath} (${pdfBytes.length} bytes)`);
+    } catch (err) {
+      console.warn(`Could not save to ${tPath}:`, err);
+    }
+  }
 
   console.log(`Successfully generated PRD PDF!`);
-  console.log(`Saved to: ${docsPath} (${pdfBytes.length} bytes)`);
-  console.log(`Saved to: ${publicPath} (${pdfBytes.length} bytes)`);
   console.log(`Total Pages: ${totalPages}`);
 }
 

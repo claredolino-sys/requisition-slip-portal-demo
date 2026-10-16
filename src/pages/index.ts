@@ -1,0 +1,9 @@
+export { default as AdminDashboard } from './AdminDashboard';
+export { default as AdminInboxPage } from './AdminInboxPage';
+export { default as ApprovedRISPage } from './ApprovedRISPage';
+export { default as AuthPage } from './AuthPage';
+export { default as EmployeeRISPage } from './EmployeeRISPage';
+export { default as GuestDashboard } from './GuestDashboard';
+export { default as InventoryPage } from './InventoryPage';
+export { default as ReportsPage } from './ReportsPage';
+export { default as SuperAdminPage } from './SuperAdminPage';

@@ -138,7 +138,7 @@ export default function GuestDashboard() {
   return (
     <div className={`flex flex-col h-full overflow-hidden relative ${user ? 'bg-white' : 'bg-gray-100 w-screen h-screen'}`}>
       
-      {/* Top Navbar for Public / Guest Visitors (Visible only on mobile devices) */}
+      {/* Top Navbar for Public / Guest Visitors (Mobile devices) */}
       {!user && (
         <header className="flex md:hidden bg-[#1A2340] text-white px-4 py-3 items-center justify-between z-30 flex-shrink-0 shadow-sm border-b border-white/10">
           <div className="flex items-center gap-2.5">
@@ -150,13 +150,6 @@ export default function GuestDashboard() {
               <span className="text-[10px] text-white/50 block">Appendix 63 Requisition System</span>
             </div>
           </div>
-          <button
-            onClick={() => navigate('/login')}
-            className="flex md:hidden items-center gap-1.5 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-semibold shadow-xs transition-colors"
-          >
-            <LogIn size={14} />
-            <span>Sign In / Demo Roles</span>
-          </button>
         </header>
       )}
 
@@ -513,14 +506,6 @@ export default function GuestDashboard() {
                 <h2 className="text-lg sm:text-xl font-bold text-gray-800">Inventory Catalog</h2>
                 <p className="text-xs text-gray-500">Tap an item to automatically add it to your slip</p>
               </div>
-              {!user && (
-                <button 
-                  onClick={() => navigate('/login')} 
-                  className="hidden md:inline-block text-xs sm:text-sm font-semibold text-blue-600 hover:text-blue-800"
-                >
-                  Sign In
-                </button>
-              )}
             </div>
 
             <div className="relative mb-3">

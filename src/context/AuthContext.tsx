@@ -1,30 +1,8 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import api from '../utils/api';
+import api from '../services/api';
+import type { User, AuthContextType } from '../types';
 
-interface User {
-  id: number;
-  employee_id: string;
-  full_name: string;
-  email: string;
-  role: 'superadmin' | 'admin' | 'admin_administrative' | 'employee';
-  department: string;
-  division: string;
-  office: string;
-  designation: string;
-  entity_name?: string;
-  fund_cluster?: string;
-  responsibility_center_code?: string;
-}
-
-interface AuthContextType {
-  user: User | null;
-  loading: boolean;
-  login: (token: string, user: User) => void;
-  updateUser: (userData: Partial<User>) => void;
-  logout: () => void;
-}
-
-const AuthContext = createContext<AuthContextType | null>(null);
+export const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
@@ -73,3 +51,5 @@ export const useAuth = () => {
   if (!context) throw new Error('useAuth must be used within AuthProvider');
   return context;
 };
+
+export default AuthContext;
