@@ -506,6 +506,16 @@ export default function GuestDashboard() {
                 <h2 className="text-lg sm:text-xl font-bold text-gray-800">Inventory Catalog</h2>
                 <p className="text-xs text-gray-500">Tap an item to automatically add it to your slip</p>
               </div>
+              {!user && (
+                <button 
+                  onClick={() => navigate('/login')} 
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm font-semibold text-blue-600 hover:text-blue-800 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors border border-blue-200 shadow-2xs cursor-pointer"
+                >
+                  <LogIn size={15} />
+                  <span>Sign In</span>
+                  <span aria-hidden="true">&rarr;</span>
+                </button>
+              )}
             </div>
 
             <div className="relative mb-3">
